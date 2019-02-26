@@ -1,4 +1,4 @@
-import { Book, Author, Card, Column } from "../models";
+import { Book, Author, Card, Column } from 'models';
 
 export default {
   Query: {
@@ -9,7 +9,7 @@ export default {
     Authors: (parent, args) => Author.find({}),
     Cards: (parent, args) => Card.find({}),
     Columns: (parent, args) => Column.find({}),
-    Books: (parent, args) => Book.find({})
+    Books: (parent, args) => Book.find({}),
   },
 
   Column: { cards: (parent, args) => Card.find({ columnId: parent.id }) },
@@ -32,6 +32,6 @@ export default {
     addColumn: (parent, args) => {
       const column = new Column({ ...args });
       return column.save();
-    }
-  }
+    },
+  },
 };

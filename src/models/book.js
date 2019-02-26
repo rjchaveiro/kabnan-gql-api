@@ -1,9 +1,9 @@
-import { Schema, model } from "mongoose";
+import { Schema, model } from 'mongoose';
 
 const BookModel = new Schema({
   name: String,
   genre: String,
-  authorId: String
+  authorId: String,
 });
 
-export default model("Book", BookModel);
+export default model('Book', BookModel);

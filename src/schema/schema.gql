@@ -1,0 +1,62 @@
+type Book {
+  id: ID!
+  name: String!
+  genre: String!
+  author: Author!
+}
+
+type Author {
+  id: ID!
+  age: Int!
+  name: String!
+  gender: String!
+  email: String!
+  about: String
+  books: [Book]
+}
+
+type Column {
+  id: ID!
+  name: String!
+  cards: [Card]
+}
+
+type Card {
+  id: ID!
+  client: String!
+  reference: String!
+  description: String!
+  tier: String
+  columnId: String
+}
+
+type Query {
+  Author(id: ID!): Author
+  Book(id: ID!): Book
+  Card(id: ID!): Card
+  Column(id: ID!): Column
+  Authors: [Author]
+  Books: [Book]
+  Cards: [Card]
+  cards: [Card]
+  Columns: [Column]
+}
+
+type Mutation {
+  addAuthor(
+    age: Int!
+    name: String!
+    gender: String!
+    email: String!
+    about: String
+  ): Author
+  addBook(name: String!, genre: String!, authorId: String!): Book
+  addCard(
+    client: String!
+    reference: String!
+    description: String!
+    tier: String
+    columnId: String
+  ): Card
+  addColumn(name: String!): Column
+}

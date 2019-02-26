@@ -9,9 +9,12 @@ export default {
     Authors: (parent, args) => Author.find({}),
     Cards: (parent, args) => Card.find({}),
     Columns: (parent, args) => Column.find({}),
-    Books: (parent, args) => Book.find({}),
-    cards: (parent, args) => Card.find({ columnId: parend.id })
+    Books: (parent, args) => Book.find({})
   },
+
+  Column: { cards: (parent, args) => Card.find({ columnId: parent.id }) },
+
+  Author: { books: (parent, args) => Book.find({ authorId: parent.id }) },
 
   Mutation: {
     addAuthor: (parent, args) => {

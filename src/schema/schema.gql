@@ -31,11 +31,19 @@ type Card {
   columnId: String
 }
 
+type User {
+  id: ID!
+  email: String!
+  password: String!
+  jwt: String
+}
+
 type Query {
   Author(id: ID!): Author
   Book(id: ID!): Book
   Card(id: ID!): Card
   Column(id: ID!): Column
+  User(id: ID!): User
   Authors: [Author]
   Books: [Book]
   Cards: [Card]
@@ -44,20 +52,10 @@ type Query {
 }
 
 type Mutation {
-  addAuthor(
-    age: Int!
-    name: String!
-    gender: String!
-    email: String!
-    about: String
-  ): Author
+  addAuthor(age: Int!, name: String!, gender: String!, email: String!, about: String): Author
   addBook(name: String!, genre: String!, authorId: String!): Book
-  addCard(
-    client: String!
-    reference: String!
-    description: String!
-    tier: String
-    columnId: String
-  ): Card
+  addCard(client: String!, reference: String!, description: String!, tier: String, columnId: String): Card
   addColumn(name: String!): Column
+  signup(email: String!, password: String!): User
+  login(email: String!, password: String!): User
 }

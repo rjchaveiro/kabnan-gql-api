@@ -1,3 +1,5 @@
+directive @isAuthenticated on FIELD_DEFINITION
+
 type Book {
   id: ID!
   name: String!
@@ -39,23 +41,25 @@ type User {
 }
 
 type Query {
-  Author(id: ID!): Author
-  Book(id: ID!): Book
-  Card(id: ID!): Card
-  Column(id: ID!): Column
-  User(id: ID!): User
-  Authors: [Author]
-  Books: [Book]
-  Cards: [Card]
-  cards: [Card]
-  Columns: [Column]
+  Author(id: ID!): Author @isAuthenticated
+  Book(id: ID!): Book @isAuthenticated
+  Card(id: ID!): Card @isAuthenticated
+  Column(id: ID!): Column @isAuthenticated
+  User(id: ID!): User @isAuthenticated
+  Authors: [Author] @isAuthenticated
+  Books: [Book] @isAuthenticated
+  Cards: [Card] @isAuthenticated
+  cards: [Card] @isAuthenticated
+  Columns: [Column] @isAuthenticated
+  me: User @isAuthenticated
 }
 
 type Mutation {
-  addAuthor(age: Int!, name: String!, gender: String!, email: String!, about: String): Author
-  addBook(name: String!, genre: String!, authorId: String!): Book
+  addAuthor(age: Int!, name: String!, gender: String!, email: String!, about: String): Author @isAuthenticated
+  addBook(name: String!, genre: String!, authorId: String!): Book @isAuthenticated
   addCard(client: String!, reference: String!, description: String!, tier: String, columnId: String): Card
-  addColumn(name: String!): Column
+    @isAuthenticated
+  addColumn(name: String!): Column @isAuthenticated
   signup(email: String!, password: String!): User
   login(email: String!, password: String!): User
 }

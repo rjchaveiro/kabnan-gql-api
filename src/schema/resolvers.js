@@ -11,7 +11,11 @@ export default {
     User: (parent, { id }) => User.findById(id),
     Authors: (parent, args) => Author.find({}),
     Cards: (parent, args) => Card.find({}),
-    Columns: (parent, args) => Column.find({}),
+    Columns: (parent, args, { user }) => Column.find({}),
+    me: (parent, args, { user }) => {
+      if (!user) throw new Error('You are not authorized to access.');
+      return User.findById(user.id);
+    },
   },
 
   Column: { cards: (parent, args) => Card.find({ columnId: parent.id }) },
@@ -37,12 +41,12 @@ export default {
     },
     signup: async (parent, { email, password }) => {
       const existingUser = await User.findOne({ email });
-      
+
       if (existingUser) throw new Error('Email already registered!');
 
-      const hash = await bcrypt.hash(password, 10);
-      const user = new User({ email, password: hash });
-      user.jwt = jwt.sign({ _id: user.id }, process.env.JWT_SECRET);
+      const user = new User({ email, password: await bcrypt.hash(password, 10) });
+
+      user.jwt = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1y' });
 
       return user.save();
     },
@@ -55,7 +59,7 @@ export default {
 
       if (!isPasswordValid) throw new Error('Wrong password.');
 
-      user.jwt = jwt.sign({ _id: user.id }, process.env.JWT_SECRET);
+      user.jwt = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
       return user;
     },
